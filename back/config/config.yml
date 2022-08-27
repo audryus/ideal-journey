@@ -1,0 +1,10 @@
+logger:
+  log_level: 'info'
+
+http:
+  port: '8080'
+
+cassandra:
+  host: '192.168.56.107'
+  keyspace: 'oauth'
+

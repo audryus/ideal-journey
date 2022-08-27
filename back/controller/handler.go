@@ -1,17 +1,21 @@
 package controller
 
 import (
-	v1 "ideal-journey/controller/v1"
+	v1 "ideal-journey/controller/http/v1"
+	"ideal-journey/usecase"
 
 	"github.com/gofiber/fiber/v2"
 	"go.elastic.co/apm/module/apmfiber/v2"
 )
 
 type Handler struct {
+	services *usecase.Services
 }
 
-func NewHandler() *Handler {
-	return &Handler{}
+func NewHandler(services *usecase.Services) *Handler {
+	return &Handler{
+		services: services,
+	}
 }
 
 func (h *Handler) Init() *fiber.App {
@@ -22,7 +26,7 @@ func (h *Handler) Init() *fiber.App {
 }
 
 func (h *Handler) api(app *fiber.App) {
-	v1 := v1.NewHandler()
+	v1 := v1.NewHandler(h.services)
 	api := app.Group("/api")
 	{
 		v1.Init(api)
