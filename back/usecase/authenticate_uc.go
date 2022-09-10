@@ -5,6 +5,7 @@ import (
 	"ideal-journey/dto"
 	"ideal-journey/entity"
 	"ideal-journey/usecase/repo"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -37,7 +38,7 @@ func (uc *AuthenticateUC) FindById(address string) (*entity.UserAuth, errors.Res
 		return nil, errors.UnautorizedError()
 	}
 	if user == nil {
-		return nil, errors.NotFoundError("no user")
+		user = &entity.UserAuth{}
 	}
 	return user, nil
 }
@@ -60,6 +61,10 @@ func (uc *AuthenticateUC) Auth(dto *dto.Authenticate) (string, errors.RestErr) {
 	return uc.jwtUC.GenerateJWT(user)
 }
 
+func (uc *AuthenticateUC) Validate(jwt string, fingerprint string) errors.RestErr {
+	return uc.jwtUC.ValidateJWT(jwt, fingerprint)
+}
+
 func verifySig(from, sigHex string, msg []byte) bool {
 	sig := hexutil.MustDecode(sigHex)
 
@@ -71,7 +76,7 @@ func verifySig(from, sigHex string, msg []byte) bool {
 		return false
 	}
 
-	recoveredAddr := crypto.PubkeyToAddress(*recovered)
+	recoveredAddr := crypto.PubkeyToAddress(*recovered).Hex()
 
-	return from == recoveredAddr.Hex()
+	return from == strings.ToLower(recoveredAddr)
 }

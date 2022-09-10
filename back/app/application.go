@@ -17,6 +17,7 @@ func Init() {
 	})
 	handlers := controller.NewHandler(services)
 	app := handlers.Init()
+
 	logger.Info("Server started")
-	log.Fatal(app.Listen(":8080"))
+	log.Fatal(app.Listen("localho.st:8080"))
 }

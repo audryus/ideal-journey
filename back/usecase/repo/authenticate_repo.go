@@ -26,7 +26,7 @@ const (
 
 func (r *AuthenticateRepo) FindById(id string) (*entity.UserAuth, errors.RestErr) {
 	result := &entity.UserAuth{}
-	if err := r.db.Query(queryFindById, id).Scan(&result); err != nil {
+	if err := r.db.Query(queryFindById, id).Scan(&result.Id, &result.Nonce, &result.Fingerprint); err != nil {
 		if err == gocql.ErrNotFound {
 			return nil, nil
 		}

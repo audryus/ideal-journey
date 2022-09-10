@@ -5,6 +5,7 @@ import (
 	"ideal-journey/usecase"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"go.elastic.co/apm/module/apmfiber/v2"
 )
 
@@ -21,6 +22,10 @@ func NewHandler(services *usecase.Services) *Handler {
 func (h *Handler) Init() *fiber.App {
 	app := fiber.New()
 	app.Use(apmfiber.Middleware())
+	// Or extend your config for customization
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+	}))
 	h.api(app)
 	return app
 }

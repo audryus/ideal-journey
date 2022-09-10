@@ -20,6 +20,7 @@ func (h *Handler) Init(api fiber.Router) {
 	v1 := api.Group("/v1")
 
 	h.authenticate(v1)
+	h.validate(v1)
 	h.get(v1)
 	h.create(v1)
 

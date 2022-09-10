@@ -1,7 +1,7 @@
 package dto
 
 type Authenticate struct {
-	Address     string `json:"email"`
+	Address     string `json:"publicAddress"`
 	Signature   string `json:"signature"`
 	Fingerprint string `json:"print"`
 }

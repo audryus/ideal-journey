@@ -10,7 +10,7 @@ import (
 )
 
 func (h *Handler) get(v1 fiber.Router) {
-	v1.Get("/user", func(c *fiber.Ctx) error {
+	v1.Get("/users", func(c *fiber.Ctx) error {
 		address := c.Query("publicAddress")
 
 		if strings.TrimSpace(address) == "" {
@@ -26,7 +26,8 @@ func (h *Handler) get(v1 fiber.Router) {
 		}
 
 		return c.JSON(fiber.Map{
-			"nonce": user.Nonce,
+			"publicAddress": user.Id,
+			"nonce":         user.Nonce,
 		})
 	})
 }
@@ -43,7 +44,8 @@ func (h *Handler) create(v1 fiber.Router) {
 			return c.Status(err.Status()).JSON(err)
 		}
 		return c.JSON(fiber.Map{
-			"nonce": user.Nonce,
+			"publicAddress": user.Id,
+			"nonce":         user.Nonce,
 		})
 	})
 }
